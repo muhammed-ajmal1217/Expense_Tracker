@@ -3,17 +3,13 @@ import 'package:expensetracker/model/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 
 class ExpenseProvider extends ChangeNotifier {
-
   List<ExpenseModel> expenses = [];
-  
   final box = Hive.box<ExpenseModel>('expense_box');
-
-  ExpenseProvider() {
-    loadData();
+   ExpenseProvider() {
+   loadData();
   }
   Future<void> loadData() async {
     try {
@@ -77,21 +73,6 @@ class ExpenseProvider extends ChangeNotifier {
       throw Exception('Error in adding expense$e');
     }
   }
-
-  // Future<void> selectDate(BuildContext context) async {
-  //   final DateTime? pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: DateTime.now(),
-  //     firstDate: DateTime(2020),
-  //     lastDate: DateTime(2100),
-  //   );
-  //   if (pickedDate != null) {
-  //     final formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-  //     dateController.text = formattedDate;
-  //     print('Selected date: $formattedDate');
-  //   }
-  //   notifyListeners();
-  // }
   Future<void> selctDate(BuildContext context, TextEditingController date) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,

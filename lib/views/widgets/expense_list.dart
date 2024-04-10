@@ -20,7 +20,7 @@ class ExpenseList extends StatelessWidget {
       builder: (context, value, child) => ListView.builder(
         itemCount: value.expenses.length,
         itemBuilder: (context, index) {
-          final expense = value.expenses[index];
+          final expense = value.expenses.reversed.toList()[index];
           return Dismissible(
             key: Key(expense.id.toString()),
             background: Container(
@@ -87,7 +87,7 @@ class ExpenseList extends StatelessWidget {
                             .withOpacity(0.1),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 3,right: 3),
+                        padding: const EdgeInsets.only(left: 3, right: 3),
                         child: Text(
                           '${expense.category}',
                           style: GoogleFonts.raleway(

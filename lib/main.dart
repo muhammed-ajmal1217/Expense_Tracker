@@ -13,9 +13,7 @@ void main() async {
   if (!Hive.isAdapterRegistered(ExpenseModelAdapter().typeId)) {
     Hive.registerAdapter(ExpenseModelAdapter());
   }
-  await Hive.openBox<ExpenseModel>('expense_box');
-  
-  // Initialize Awesome Notifications
+  // await Hive.openBox<ExpenseModel>('expense_box');
   await AwesomeNotifications().initialize(
     null,
     [
@@ -45,7 +43,7 @@ Future<void> scheduleNotification() async {
     content: NotificationContent(
       id: 1,
       channelKey: 'basic_channel',
-      title: 'Hourly Reminder',
+      title: 'Reminder',
       body: 'Don\'t forget to track your expenses!',
     ),
     schedule: NotificationInterval(interval: 5 * 60),

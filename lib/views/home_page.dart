@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:expensetracker/controller/home_provider.dart';
 import 'package:expensetracker/helpers/helpers.dart';
 import 'package:expensetracker/views/utils/lists.dart';
