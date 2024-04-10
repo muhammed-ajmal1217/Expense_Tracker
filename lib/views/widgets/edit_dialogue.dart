@@ -1,5 +1,6 @@
 import 'package:expensetracker/controller/home_provider.dart';
 import 'package:expensetracker/model/expense_model.dart';
+import 'package:expensetracker/views/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -7,12 +8,13 @@ import 'package:provider/provider.dart';
 
 class EditDialogue extends StatefulWidget {
   EditDialogue({
-    super.key,
+    Key? key,
     required this.categoryIcons,
     required this.categoryNames,
     required this.expense,
-  });
-  ExpenseModel expense;
+  }) : super(key: key);
+
+  final ExpenseModel expense;
   final List<IconData> categoryIcons;
   final List<String> categoryNames;
 
@@ -21,18 +23,19 @@ class EditDialogue extends StatefulWidget {
 }
 
 class _EditDialogueState extends State<EditDialogue> {
+  TextEditingController amountController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  String? selectedCategory;
   final style = GoogleFonts.raleway();
+
   @override
   void initState() {
-    final pro = Provider.of<ExpenseProvider>(context, listen: false);
     super.initState();
-    pro.amountController =
-        TextEditingController(text: widget.expense.amount.toString());
-    pro.descriptionController =
-        TextEditingController(text: widget.expense.description);
-    pro.dateController = TextEditingController(
-        text: DateFormat('dd/MM/yyyy').format(widget.expense.date!));
-    pro.selectedCategory = widget.expense.category;
+    amountController.text = widget.expense.amount.toString();
+    descriptionController.text = widget.expense.description ?? '';
+    dateController.text = DateFormat('dd/MM/yyyy').format(widget.expense.date!);
+    selectedCategory = widget.expense.category;
   }
 
   @override
@@ -46,44 +49,22 @@ class _EditDialogueState extends State<EditDialogue> {
               style: GoogleFonts.raleway(color: Color.fromARGB(255, 6, 43, 66)),
             ),
             actions: [
-              TextFormField(
+              TextWidget(
                 style: GoogleFonts.montserrat(),
-                controller: value.amountController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'Amount',
-                  hintStyle: style,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                ),
+                controller: amountController,
+                hintText: 'Amount',
+                type: TextInputType.number,
               ),
               SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      style: style,
-                      controller: value.dateController,
-                      decoration: InputDecoration(
-                        hintText: 'Date',
-                        hintStyle: style,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                        suffixIcon: InkWell(
-                            onTap: () {
-                              value.selectDate(context);
-                            },
-                            child: Icon(Icons.date_range)),
-                      ),
-                    ),
-                  ),
-                ],
+              TextWidget(
+                style: style,
+                controller: dateController,
+                icon: Icons.date_range,
+                onTap: () {
+                  value.selctDate(context, dateController);
+                },
+                hintText: 'Date',
+                type: TextInputType.phone,
               ),
               SizedBox(height: 15),
               DropdownButtonFormField<String>(
@@ -97,9 +78,9 @@ class _EditDialogueState extends State<EditDialogue> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                value: value.selectedCategory,
+                value: selectedCategory,
                 onChanged: (newValue) {
-                  value.selectedCategory = newValue;
+                    selectedCategory = newValue;
                 },
                 items: List.generate(widget.categoryIcons.length, (index) {
                   return DropdownMenuItem<String>(
@@ -118,19 +99,11 @@ class _EditDialogueState extends State<EditDialogue> {
                 }),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: value.descriptionController,
+              TextWidget(
                 style: style,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'Description',
-                  hintStyle: style,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                ),
+                controller: descriptionController,
+                hintText: 'Description',
+                type: TextInputType.text,
               ),
               SizedBox(
                 height: 15,
@@ -140,7 +113,19 @@ class _EditDialogueState extends State<EditDialogue> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      await value.updateExpense(widget.expense);
+                      await value.updateExpense(
+                        ExpenseModel(
+                          id: widget.expense.id,
+                          amount: int.parse(amountController.text),
+                          date: DateFormat('dd/MM/yyyy')
+                              .parse(dateController.text),
+                          category: selectedCategory!,
+                          description: descriptionController.text,
+                        ),
+                      );
+                      amountController.clear();
+                      descriptionController.clear();
+                      dateController.clear();
                       Navigator.of(context).pop();
                       value.loadData();
                     },

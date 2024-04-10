@@ -1,8 +1,12 @@
 import 'package:expensetracker/controller/home_provider.dart';
+import 'package:expensetracker/model/expense_model.dart';
+import 'package:expensetracker/views/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddDialogue extends StatelessWidget {
   AddDialogue({
@@ -10,11 +14,15 @@ class AddDialogue extends StatelessWidget {
     required this.categoryIcons,
     required this.categoryNames,
   });
-
   final List<IconData> categoryIcons;
   final List<String> categoryNames;
   final style = GoogleFonts.raleway();
 
+  TextEditingController amountController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  String? selectedCategory;
+  final uuid = Uuid();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,44 +34,22 @@ class AddDialogue extends StatelessWidget {
               style: GoogleFonts.raleway(color: Color.fromARGB(255, 6, 43, 66)),
             ),
             actions: [
-              TextFormField(
+              TextWidget(
                 style: GoogleFonts.montserrat(),
-                controller: value.amountController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: 'Amount',
-                  hintStyle: style,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                ),
+                controller: amountController,
+                hintText: 'Amount',
+                type: TextInputType.number,
               ),
               SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      style: style,
-                      controller: value.dateController,
-                      decoration: InputDecoration(
-                        hintText: 'Date',
-                        hintStyle: style,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                        suffixIcon: InkWell(
-                            onTap: () {
-                              value.selectDate(context);
-                            },
-                            child: Icon(Icons.date_range)),
-                      ),
-                    ),
-                  ),
-                ],
+              TextWidget(
+                style: style,
+                controller: dateController,
+                hintText: 'Date',
+                icon: Icons.date_range,
+                onTap: () {
+                  value.selctDate(context,dateController);
+                },
+                type: TextInputType.phone,
               ),
               SizedBox(height: 15),
               DropdownButtonFormField<String>(
@@ -77,9 +63,9 @@ class AddDialogue extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                value: value.selectedCategory,
+                value: selectedCategory,
                 onChanged: (newValue) {
-                  value.selectedCategory = newValue;
+                  selectedCategory = newValue;
                 },
                 items: List.generate(categoryIcons.length, (index) {
                   return DropdownMenuItem<String>(
@@ -98,38 +84,49 @@ class AddDialogue extends StatelessWidget {
                 }),
               ),
               SizedBox(height: 15),
-              TextFormField(
-                controller: value.descriptionController,
+              TextWidget(
                 style: style,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  hintText: 'Description',
-                  hintStyle: style,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                ),
+                controller: descriptionController,
+                hintText: 'Description',
               ),
-              SizedBox(height: 15,),
+              SizedBox(
+                height: 15,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () async {
-                      await value.addExpenses();
+                      await value.addExpenses(
+                        ExpenseModel(
+                          id: uuid.v4(),
+                          amount: int.parse(amountController.text),
+                          date: DateFormat('dd/MM/yyyy')
+                              .parse(dateController.text),
+                          category: selectedCategory!,
+                          description: descriptionController.text,
+                        ),
+                      );
+                      amountController.clear();
+                      descriptionController.clear();
+                      dateController.clear();
                       Navigator.of(context).pop();
                       value.loadData();
                     },
-                    child: Text('Add',style: style,),
+                    child: Text(
+                      'Add',
+                      style: style,
+                    ),
                   ),
                   SizedBox(width: 20),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Cancel',style: style,),
+                    child: Text(
+                      'Cancel',
+                      style: style,
+                    ),
                   ),
                 ],
               ),

@@ -7,14 +7,11 @@ import 'package:uuid/uuid.dart';
 
 
 class ExpenseProvider extends ChangeNotifier {
-  TextEditingController amountController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  String? selectedCategory;
-  List<ExpenseModel> expenses = [];
 
-  final uuid = Uuid();
+  List<ExpenseModel> expenses = [];
+  
   final box = Hive.box<ExpenseModel>('expense_box');
+
   ExpenseProvider() {
     loadData();
   }
@@ -28,30 +25,26 @@ class ExpenseProvider extends ChangeNotifier {
     }
   }
 
-  addExpenses() async {
+  addExpenses(ExpenseModel expense) async {
     try {
-      final id = uuid.v4();
-      final amount = amountController.text;
-      final date = dateController.text;
-      final parsedDate = DateFormat('dd/MM/yyyy').parse(date);
-      final description = descriptionController.text;
-      final category = selectedCategory;
-      if (id.isNotEmpty &&
-          amount.isNotEmpty &&
-          parsedDate != null &&
-          description.isNotEmpty &&
+      final id = expense.id;
+      final amount = expense.amount;
+      final date = expense.date;
+      final description = expense.description;
+      final category = expense.category;
+      if (id!=null &&
+          amount!=null &&
+          date != null &&
+          description!=null &&
           category!.isNotEmpty) {
         ExpenseModel expense = ExpenseModel(
           id: id,
-          amount: int.parse(amount),
-          date: parsedDate,
+          amount: amount,
+          date: date,
           category: category,
           description: description,
         );
         await DataBase.addExpenseBox(expense);
-        amountController.clear();
-        descriptionController.clear();
-        dateController.clear();
         notifyListeners();
       }
     } catch (e) {
@@ -61,27 +54,23 @@ class ExpenseProvider extends ChangeNotifier {
 
   updateExpense(ExpenseModel expens) async {
     try {
-      final amount = amountController.text;
-      final date = dateController.text;
-      final parsedDate = DateFormat('dd/MM/yyyy').parse(date);
-      final description = descriptionController.text;
-      final category = selectedCategory;
+      final amount = expens.amount;
+      final date = expens.date;
+      final description = expens.description;
+      final category = expens.category;
       if (expens.id != null &&
-          amount.isNotEmpty &&
-          parsedDate != null &&
-          description.isNotEmpty &&
+          amount!=null &&
+          date != null &&
+          description!=null &&
           category!.isNotEmpty) {
         ExpenseModel expense = ExpenseModel(
           id: expens.id,
-          amount: int.parse(amount),
-          date: parsedDate,
+          amount: amount,
+          date: date,
           category: category,
           description: description,
         );
         await DataBase.updateExpense(expens.id!, expense);
-        amountController.clear();
-        descriptionController.clear();
-        dateController.clear();
         notifyListeners();
       }
     } catch (e) {
@@ -89,7 +78,21 @@ class ExpenseProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> selectDate(BuildContext context) async {
+  // Future<void> selectDate(BuildContext context) async {
+  //   final DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2020),
+  //     lastDate: DateTime(2100),
+  //   );
+  //   if (pickedDate != null) {
+  //     final formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+  //     dateController.text = formattedDate;
+  //     print('Selected date: $formattedDate');
+  //   }
+  //   notifyListeners();
+  // }
+  Future<void> selctDate(BuildContext context, TextEditingController date) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -98,9 +101,10 @@ class ExpenseProvider extends ChangeNotifier {
     );
     if (pickedDate != null) {
       final formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
-      dateController.text = formattedDate;
+      date.text = formattedDate;
       print('Selected date: $formattedDate');
     }
     notifyListeners();
   }
+
 }
