@@ -1,7 +1,7 @@
 # Expense Tracker Application
 
 ## Overview
-This Expense Tracker Application is designed to help users keep track of their expenses efficiently. It provides a simple and intuitive interface for managing expenses by allowing users to add, delete, and update expenses. Additionally, it offers various features such as category-based expense tracking, total expense calculation for each category, total expense calculation, and date-based expense filtering.
+This Expense Tracker Application is designed to help users keep track of their expenses efficiently. It provides a simple and intuitive interface for managing expenses by allowing users to add, delete, and update expenses. Additionally, it offers various features such as category-based expense tracking, total expense calculation for each category, total expense calculation, and date-based expense display's.
 
 ## Features
 1. **Add, Delete, and Update Expenses**: Easily add new expenses, delete existing ones, and update details of any expense.
