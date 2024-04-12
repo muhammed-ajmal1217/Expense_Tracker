@@ -9,6 +9,7 @@ This Expense Tracker Application is designed to help users keep track of their e
 3. **Total Expense of Each Category**: View the total expenses for each category to analyze where the money is being spent the most.
 4. **Total Expense Calculation**: Get an overall total of all expenses recorded.
 5. **Date-based Expenses**: Filter expenses based on specific dates to track spending over time.
+6. **Notification**: Reminder notification added for a specific time.
 
 <!-- Image Gallery -->
 <div align="center">
