@@ -6,6 +6,7 @@ class TextWidget extends StatelessWidget {
   IconData? icon;
   String?hintText;
   TextInputType? type;
+  int? maxLines;
   TextWidget({
     super.key,
     required this.style,
@@ -14,13 +15,14 @@ class TextWidget extends StatelessWidget {
     this.icon,
     this.hintText,
     this.type,
-  });
+    this.maxLines,  });
 
   final TextStyle style;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       style: style,
       controller: controller,
       keyboardType: type,

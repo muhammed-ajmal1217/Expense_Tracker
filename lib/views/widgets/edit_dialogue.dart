@@ -104,6 +104,7 @@ class _EditDialogueState extends State<EditDialogue> {
                 controller: descriptionController,
                 hintText: 'Description',
                 type: TextInputType.text,
+                maxLines: 2,
               ),
               SizedBox(
                 height: 15,

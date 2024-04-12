@@ -72,7 +72,7 @@ class CategoryList extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                      height: size.height * 0.02),
+                      height: size.height * 0.002),
                   Consumer<ExpenseProvider>(
                     builder: (context, value, child) => 
                      Align(

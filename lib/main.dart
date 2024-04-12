@@ -13,7 +13,7 @@ void main() async {
   if (!Hive.isAdapterRegistered(ExpenseModelAdapter().typeId)) {
     Hive.registerAdapter(ExpenseModelAdapter());
   }
-  // await Hive.openBox<ExpenseModel>('expense_box');
+  await Hive.openBox<ExpenseModel>('expense_box');
   await AwesomeNotifications().initialize(
     null,
     [

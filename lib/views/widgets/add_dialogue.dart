@@ -88,6 +88,7 @@ class AddDialogue extends StatelessWidget {
                 style: style,
                 controller: descriptionController,
                 hintText: 'Description',
+                maxLines: 2,
               ),
               SizedBox(
                 height: 15,

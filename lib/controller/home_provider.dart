@@ -9,7 +9,11 @@ class ExpenseProvider extends ChangeNotifier {
   List<ExpenseModel> expenses = [];
   final box = Hive.box<ExpenseModel>('expense_box');
    ExpenseProvider() {
-   loadData();
+    init();
+  }
+  Future<void> init() async {
+    await Hive.openBox<ExpenseModel>('expense_box');
+    loadData();
   }
   Future<void> loadData() async {
     try {

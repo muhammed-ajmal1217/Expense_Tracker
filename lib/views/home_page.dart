@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Container(
-                      height: size.height * 0.72,
+                      height: size.height * 0.62,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -39,10 +39,10 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: size.height * 0.12,
+                            height: size.height * 0.08,
                           ),
                           SizedBox(
-                            height: size.height * 0.15,
+                            height: size.height * 0.18,
                             child: Align(
                               alignment: Alignment.topCenter,
                               child: CategoryList(
@@ -58,90 +58,88 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: size.height * 0.62),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Container(
-                          height: size.height * 0.26,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.45),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 6))
-                            ],
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: HelPers.cardLineGradient(),
-                          ),
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 100,
+                      padding:  EdgeInsets.only(left: 20, right: 20,bottom: size.height * 0.57),
+                      child: Container(
+                        height: size.height *
+                            0.26, 
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.45),
+                              blurRadius: 10,
+                              offset: Offset(0, 6),
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: HelPers.cardLineGradient(),
+                        ),
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: size.height *
+                                  0.15,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(200),
+                                  ),
+                                color: Colors.blue.withOpacity(0.05),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                height: size.height * 0.20,
                                 width: 100,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(100)),
-                                  color: Colors.blue.withOpacity(0.05),
+                                    bottomRight: Radius.circular(20),
+                                    topLeft: Radius.circular(200),
+                                  ),
+                                  color: Colors.blue.withOpacity(0.1),
                                 ),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  height: 170,
-                                  width: 170,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(20),
-                                        topLeft: Radius.circular(200)),
-                                    color: Colors.blue.withOpacity(0.1),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 2),
+                                  child: Container(
+                                    height: 1.5,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      gradient: HelPers.cardGradient(),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10, top: 2),
-                                    child: Container(
-                                      height: 1.5,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        gradient: HelPers.cardGradient(),
-                                      ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    'E X P E N S E   C A R D',
+                                    style: GoogleFonts.montserrat(
+                                      color: Colors.white,
+                                      fontSize: 15,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Text(
-                                      'E X P E N S E   C A R D',
-                                      style: GoogleFonts.montserrat(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: Text(
+                                  '₹ ${AppUtils.calculateTotalAmount(value.expenses)}',
+                                  style: GoogleFonts.robotoMono(
+                                    color: Colors.white,
+                                    fontSize: 30,
                                   ),
-                                  SizedBox(
-                                    height: size.height * 0.08,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(17.0),
-                                      child: Text(
-                                        '₹ ${AppUtils.calculateTotalAmount(value.expenses)}',
-                                        style: GoogleFonts.robotoMono(
-                                          color: Colors.white,
-                                          fontSize: 30,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),)
+                          ],
                         ),
                       ),
                     ),
